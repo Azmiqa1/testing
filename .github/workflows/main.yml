@@ -27,6 +27,6 @@ jobs:
       
       - name: Deploy to server
         run: |
-          ssh -o StrictHostKeyChecking=no root@168.119.238.20 "cd ~/azmi && git pull && npm install && npm run build || { echo 'Deployment failed!'; exit 1; }"
+          ssh -o StrictHostKeyChecking=no root@168.119.238.20 "cd ~/azmi && git pull && npm install && npm run build"
         env:
           DEPLOY_KEY: ${{ secrets.SERVER_KEY }}
