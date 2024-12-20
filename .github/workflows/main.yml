@@ -24,3 +24,9 @@ jobs:
         uses: webfactory/ssh-agent@v0.5.3
         with:
           ssh-private-key: ${{ secrets.SERVER_KEY }}
+      
+      - name: Deploy to server
+        run: |
+          ssh -o StrictHostKeyChecking=no root@168.119.238.20 "cd ~/azmi && git pull && npm install && npm run build || { echo 'Deployment failed!'; exit 1; }"
+        env:
+          DEPLOY_KEY: ${{ secrets.SERVER_KEY }}
