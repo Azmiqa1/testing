@@ -19,13 +19,8 @@ jobs:
       - name: Install dependencies and test
         run: |
           npm install
-
-        
-      - name: Run deployment commands on server
-        run: |
-            cd ~/azmi
-            npm install
-            npm run build || { echo 'Deployment failed!'; exit 1; } 
-           
-
-     
+      
+      - name: Set up SSH key for server deployment
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SERVER_KEY }}
