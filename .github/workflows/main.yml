@@ -1,4 +1,4 @@
-name: code deployment
+name: Code Deployment
 
 on:
   push:
@@ -12,19 +12,24 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Copy Files to Server 
+      - name: Copy Files to Server
         uses: appleboy/scp-action@master
         with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }}
-          Key: ${{ secrets.SERVER_KEY }}
-          source: "./*"
-          target: "~/azmi"
+          host: ${{ secrets.SERVER_HOST }}            
+          username: ${{ secrets.SERVER_USER }}        
+          key: ${{ secrets.SERVER_KEY }}             
+          source: "./**/*"                           
+          target: "~/azmi"                           
+          port: 22                                    
 
       - name: Run deployment commands on server
         run: |
           ssh -i ${{ secrets.SERVER_KEY }} ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << 'EOF'
+        
+            if command -v nvm > /dev/null 2>&1; then
+              nvm use 16  
+            fi
             cd ~/azmi
             npm install
-            npm run build
+            npm run build || { echo 'Deployment failed!'; exit 1; }
           EOF
