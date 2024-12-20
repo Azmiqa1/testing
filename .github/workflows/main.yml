@@ -19,7 +19,11 @@ jobs:
       - name: Install dependencies and test
         run: |
           npm install
-      - name: Deploy to server
-        uses: webfactory/ssh-agent@v0.5.3
-        with:
-          ssh-private-key: ${{ secrets.SERVER_KEY }}
+      - name: Run deployment commands on server
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << EOF
+            cd /path/to/your/project
+            git pull origin main
+            npm install
+            npm run build
+          EOF
