@@ -23,10 +23,9 @@ jobs:
         
       - name: Run deployment commands on server
         run: |
-          ssh -i ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << 'EOF'
             cd ~/azmi
             npm install
             npm run build || { echo 'Deployment failed!'; exit 1; } 
-          EOF
+           
 
      
