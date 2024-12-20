@@ -1,4 +1,4 @@
-name: Code Deployment
+name: Node.js CI/CD
 
 on:
   push:
@@ -10,15 +10,9 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3                    
+        uses: actions/checkout@v3
 
-      - name: Run deployment commands on server
-        run: |
-          ssh -i ${{ secrets.SERVER_KEY }} ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << 'EOF'
-            if command -v nvm > /dev/null 2>&1; then
-              nvm use 16  # Example: Ensure Node.js version 16 is used
-            fi
-            cd ~/azmi
-            npm install
-            npm run build || { echo 'Deployment failed!'; exit 1; }
-          EOF
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '12.22.9'
